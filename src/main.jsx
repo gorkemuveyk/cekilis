@@ -8,6 +8,10 @@ import CartDetail from "./CartDetail.jsx";
 import Checkout from "./Checkout.jsx";
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <Item />,
+  },
+  {
     path: "/iphone-15-pro-max",
     element: <Item />,
   },
